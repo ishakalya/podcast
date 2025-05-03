@@ -1,0 +1,89 @@
+EV Market Analysis Report
+=======================
+
+1. Market Leaders
+-----------------
+Top 3 manufacturers:
+maker
+Tata Motors            88935
+Mahindra & Mahindra    41193
+MG Motor               13753
+
+2. Growth Trends
+---------------
+Latest month sales: 8738
+Year-over-year growth: -0.93%
+
+3. Geographic Distribution
+-------------------------
+Top 5 states:
+state
+Maharashtra    396045
+Karnataka      312995
+Tamil Nadu     200062
+Gujarat        181389
+Rajasthan      150366
+
+4. Consumer Insights
+-------------------
+Key factors:
+Knowledge    3.401603
+Attitude     3.401603
+Practice     3.363134
+
+5. Demographic Analysis
+---------------------
+Age Distribution:
+What is your age? 
+2    304
+1    303
+3    278
+4    238
+
+Occupation Distribution:
+What is your occupation?
+1.0    298
+2.0    298
+3.0    278
+4.0    247
+
+Gender Distribution:
+What is your gender? 
+2    693
+1    430
+
+6. Innovation Adoption Analysis
+-----------------------------
+Early Adopter States:
+             adoption_rate                   category
+state                                                
+Kerala           11.688090  Innovators/Early Adopters
+Goa               7.505706  Innovators/Early Adopters
+Delhi             5.632940  Innovators/Early Adopters
+Karnataka         5.432041  Innovators/Early Adopters
+Maharashtra       4.759313  Innovators/Early Adopters
+
+7. Consumer Segmentation
+-----------------------
+Target Segment Profile:
+Cluster: 1
+Knowledge Score: 4.98
+Attitude Score: 5.00
+Practice Score: 4.98
+Total Score: 4.99
+
+8. Strategic Pricing
+------------------
+Recommended Price Segment: Premium
+Price Range: ₹15.0 - 25.0 lakhs
+Pricing Strategy: Value-based pricing with focus on premium features
+Potential Customer Base: 2845656
+Potential Profit: ₹569131.17 crores
+
+9. Marketing Mix
+---------------
+Product: 4-Wheeler Electric SUV/Sedan
+Key Features: Range: 499 km, Battery: 89 kWh, Fast charging capability, Connected car features, Advanced driver assistance systems
+Price Segment: Premium
+Primary Markets: Kerala, Goa, Delhi
+Primary Promotion Channels: Digital marketing campaigns, Influencer partnerships, Experience centers, Test drive programs
