@@ -629,18 +629,18 @@ elif page == "Financial Equation":
         #### Your Financial Equations:
         
         **Revenue Equation:**
-        $$R = p · q$$
-        $$R = {unit_price:,} · {month_sales:,} = {total_revenue:,.0f}$$
+        $${{R}} = {{p}} · {{q}}$$
+        $${{R}} = {unit_price:,} · {month_sales:,} = {total_revenue:,.0f}$$
         
         **Profit Equation:**
-        $$P = R - FC - VC$$
-        $$P = {total_revenue:,.0f} - {fixed_costs:,} - {variable_costs:,.0f} = {profit:,.0f}$$
+        $${{P}} = {{R}} - {{FC}} - {{VC}}$$
+        $${{P}} = {total_revenue:,.0f} - {fixed_costs:,} - {variable_costs:,.0f} = {profit:,.0f}$$
         
         **Variable Costs:**
-        $$VC = {variable_costs_percent}\% · R = {variable_costs:,.0f}$$
+        $${{VC}} = {variable_costs_percent}\% · {{R}} = {variable_costs:,.0f}$$
         
         **Profit Margin:**
-        $$PM\% = \frac{P}{R} · 100\% = {profit_margin:.1f}\%$$
+        $$PM\% = \frac{{P}}{{R}} · 100\% = {profit_margin:.1f}\%$$
         """)
         
         # Display financial metrics
