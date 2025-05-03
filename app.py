@@ -512,13 +512,11 @@ elif page == "Financial Projections":
         title="Sales Volume and Profit Margin Projection",
         xaxis=dict(title="Year"),
         yaxis=dict(
-            title="Sales Volume",
-            titlefont=dict(color="royalblue"),
+            title=dict(text="Sales Volume", font=dict(color="royalblue")),
             tickfont=dict(color="royalblue")
         ),
         yaxis2=dict(
-            title="Profit Margin (%)",
-            titlefont=dict(color="firebrick"),
+            title=dict(text="Profit Margin (%)", font=dict(color="firebrick")),
             tickfont=dict(color="firebrick"),
             anchor="x",
             overlaying="y",
