@@ -624,17 +624,23 @@ elif page == "Financial Equation":
         profit = total_revenue - fixed_costs - variable_costs
         profit_margin = (profit / total_revenue) * 100 if total_revenue > 0 else 0
         
-        # Display revenue equation
+        # Display revenue and profit equations
         st.markdown(f"""
-        #### Your Financial Equation:
+        #### Your Financial Equations:
         
-        $$Revenue = {unit_price:,} \times Sales - {fixed_costs:,}$$
+        **Revenue Equation:**
+        $$Revenue = Unit \ Price \times Sales \ Volume$$
+        $$Revenue = {unit_price:,} \times {month_sales:,} = {total_revenue:,.0f}$$
         
-        For {example_month} with sales of {month_sales:,} units:
+        **Profit Equation:**
+        $$Profit = Revenue - Fixed \ Costs - Variable \ Costs$$
+        $$Profit = {total_revenue:,.0f} - {fixed_costs:,} - {variable_costs:,.0f} = {profit:,.0f}$$
         
-        $$Revenue = {unit_price:,} \times {month_sales:,} - {fixed_costs:,} - Variable \ Costs$$
-        $$Revenue = {total_revenue:,} - {fixed_costs:,} - {variable_costs:,.0f}$$
-        $$Profit = {profit:,.0f}$$
+        **Variable Costs:**
+        $$Variable \ Costs = {variable_costs_percent}\% \times Revenue = {variable_costs:,.0f}$$
+        
+        **Profit Margin:**
+        $$Profit \ Margin = \frac{{Profit}}{{Revenue}} \times 100\% = {profit_margin:.1f}\%$$
         """)
         
         # Display financial metrics
