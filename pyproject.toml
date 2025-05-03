@@ -12,4 +12,5 @@ dependencies = [
     "seaborn>=0.13.2",
     "sqlalchemy>=2.0.40",
     "streamlit>=1.45.0",
+    "trafilatura>=2.0.0",
 ]
