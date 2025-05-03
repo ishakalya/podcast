@@ -71,7 +71,7 @@ Indian EV consumer segments. Use the sidebar to navigate through different analy
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Select a page:",
-    ["Overview", "Segment Profiles", "Market Analysis", "Geographic Insights", "Financial Projections", "Predictive Analytics"]
+    ["Overview", "Segment Profiles", "Market Analysis", "Geographic Insights", "Financial Projections", "Financial Equation", "Predictive Analytics"]
 )
 
 # Overview page
@@ -532,6 +532,309 @@ elif page == "Financial Projections":
     )
     
     st.plotly_chart(fig, use_container_width=True)
+
+# Financial Equation
+elif page == "Financial Equation":
+    st.header("Financial Equation Analysis")
+    
+    st.markdown("""
+    ### EV Market Financial Equation
+    
+    This section demonstrates how EV sales directly translate to revenue using a simple financial equation.
+    The equation models revenue as a function of sales, helping you understand the direct relationship between
+    market trends and financial outcomes.
+    """)
+    
+    st.markdown("""
+    #### Revenue Equation:
+    
+    $$Revenue = (Unit \ Price \times Sales \ Volume) - Fixed \ Costs$$
+    
+    Or expressed as a function:
+    
+    $$y = (Unit \ Price \times x) - Fixed \ Costs$$
+    
+    where:
+    - $y$ is the total revenue
+    - $x$ is the sales volume
+    - $Unit \ Price$ is the price per unit
+    - $Fixed \ Costs$ are the costs independent of sales volume
+    """)
+    
+    # Get real monthly sales data
+    if data['sales_by_state'] is not None:
+        # Extract monthly sales data
+        monthly_data = data['sales_by_state'].copy()
+        monthly_data['month_year'] = monthly_data['date'].dt.strftime('%b %Y')
+        monthly_sales = monthly_data.groupby('month_year')['electric_vehicles_sold'].sum().reset_index()
+        
+        # Get the latest month data for the example
+        latest_month = monthly_sales.iloc[-1]['month_year']
+        latest_month_sales = int(monthly_sales.iloc[-1]['electric_vehicles_sold'])
+        
+        # Create interactive parameters
+        st.subheader("Configure Financial Parameters")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            unit_price = st.number_input(
+                "Average Unit Price (INR)",
+                min_value=100000,
+                max_value=5000000,
+                value=500000,
+                step=100000,
+                format="%d"
+            )
+            
+            example_month = st.selectbox(
+                "Select Month for Analysis",
+                options=monthly_sales['month_year'].tolist(),
+                index=len(monthly_sales['month_year'])-1
+            )
+            
+            # Get sales for selected month
+            month_sales = int(monthly_sales[monthly_sales['month_year'] == example_month]['electric_vehicles_sold'].values[0])
+        
+        with col2:
+            fixed_costs = st.number_input(
+                "Monthly Fixed Costs (INR)",
+                min_value=100000,
+                max_value=50000000,
+                value=2000000,
+                step=100000,
+                format="%d"
+            )
+            
+            variable_costs_percent = st.slider(
+                "Variable Costs (% of Unit Price)",
+                min_value=0.0,
+                max_value=90.0,
+                value=30.0,
+                step=5.0
+            )
+        
+        # Calculate revenue and profit
+        st.subheader(f"Financial Analysis for {example_month}")
+        
+        total_revenue = (unit_price * month_sales)
+        variable_costs = (unit_price * month_sales) * (variable_costs_percent / 100)
+        profit = total_revenue - fixed_costs - variable_costs
+        profit_margin = (profit / total_revenue) * 100 if total_revenue > 0 else 0
+        
+        # Display revenue equation
+        st.markdown(f"""
+        #### Your Financial Equation:
+        
+        $$Revenue = {unit_price:,} \times Sales - {fixed_costs:,}$$
+        
+        For {example_month} with sales of {month_sales:,} units:
+        
+        $$Revenue = {unit_price:,} \times {month_sales:,} - {fixed_costs:,} - Variable \ Costs$$
+        $$Revenue = {total_revenue:,} - {fixed_costs:,} - {variable_costs:,.0f}$$
+        $$Profit = {profit:,.0f}$$
+        """)
+        
+        # Display financial metrics
+        metric1, metric2, metric3, metric4 = st.columns(4)
+        
+        with metric1:
+            st.metric("Sales Volume", f"{month_sales:,} units")
+        
+        with metric2:
+            st.metric("Total Revenue", f"₹{total_revenue:,.0f}")
+        
+        with metric3:
+            st.metric("Total Profit", f"₹{profit:,.0f}")
+        
+        with metric4:
+            st.metric("Profit Margin", f"{profit_margin:.1f}%")
+        
+        # Create a dataframe for visualization
+        sales_range = list(range(0, month_sales * 2, max(1, month_sales // 10)))
+        if sales_range[-1] < month_sales * 2:
+            sales_range.append(month_sales * 2)
+        
+        revenue_data = []
+        for sales in sales_range:
+            total_rev = unit_price * sales
+            var_costs = total_rev * (variable_costs_percent / 100)
+            prof = total_rev - fixed_costs - var_costs
+            prof_margin = (prof / total_rev) * 100 if total_rev > 0 else 0
+            
+            revenue_data.append({
+                "Sales Volume": sales,
+                "Revenue": total_rev,
+                "Profit": prof,
+                "Profit Margin (%)": prof_margin
+            })
+        
+        revenue_df = pd.DataFrame(revenue_data)
+        
+        # Breakeven analysis
+        if variable_costs_percent < 100:
+            contribution_margin = unit_price * (1 - variable_costs_percent / 100)
+            breakeven_point = fixed_costs / contribution_margin
+            
+            st.subheader("Breakeven Analysis")
+            st.markdown(f"""
+            The breakeven point is the sales volume where total revenue equals total costs (fixed + variable),
+            resulting in zero profit.
+            
+            **Breakeven Point: {breakeven_point:,.0f} units**
+            
+            At this sales volume, the revenue will exactly cover all costs.
+            """)
+            
+            # Add breakeven point to visualization
+            if breakeven_point <= max(sales_range):
+                breakeven_df = pd.DataFrame({
+                    "Sales Volume": [breakeven_point],
+                    "Type": ["Breakeven Point"]
+                })
+        
+        # Visualization - Revenue and Profit Curve
+        st.subheader("Revenue and Profit Curves")
+        
+        fig = go.Figure()
+        
+        fig.add_trace(go.Scatter(
+            x=revenue_df["Sales Volume"],
+            y=revenue_df["Revenue"],
+            name="Revenue",
+            line=dict(color='green', width=3)
+        ))
+        
+        fig.add_trace(go.Scatter(
+            x=revenue_df["Sales Volume"],
+            y=revenue_df["Profit"],
+            name="Profit",
+            line=dict(color='blue', width=3)
+        ))
+        
+        # Add horizontal line at y=0 for reference
+        fig.add_shape(
+            type="line",
+            x0=0,
+            y0=0,
+            x1=max(sales_range),
+            y1=0,
+            line=dict(color="red", width=2, dash="dash")
+        )
+        
+        # Add vertical line at current sales
+        fig.add_shape(
+            type="line",
+            x0=month_sales,
+            y0=min([min(revenue_df["Profit"]), 0]),
+            x1=month_sales,
+            y1=max(revenue_df["Revenue"]),
+            line=dict(color="purple", width=2, dash="dot")
+        )
+        
+        # Add annotation for current month's sales
+        fig.add_annotation(
+            x=month_sales,
+            y=total_revenue,
+            text=f"Current Sales: {month_sales:,}",
+            showarrow=True,
+            arrowhead=2,
+            arrowsize=1,
+            arrowwidth=2,
+            arrowcolor="purple"
+        )
+        
+        # Add breakeven point if within range
+        if 'breakeven_point' in locals() and breakeven_point <= max(sales_range):
+            # Add vertical line at breakeven point
+            fig.add_shape(
+                type="line",
+                x0=breakeven_point,
+                y0=min([min(revenue_df["Profit"]), 0]),
+                x1=breakeven_point,
+                y1=unit_price * breakeven_point,
+                line=dict(color="orange", width=2, dash="dot")
+            )
+            
+            # Add annotation for breakeven point
+            fig.add_annotation(
+                x=breakeven_point,
+                y=unit_price * breakeven_point / 2,
+                text=f"Breakeven: {breakeven_point:,.0f}",
+                showarrow=True,
+                arrowhead=2,
+                arrowsize=1,
+                arrowwidth=2,
+                arrowcolor="orange"
+            )
+        
+        fig.update_layout(
+            title=f"Revenue and Profit as Functions of Sales Volume",
+            xaxis_title="Sales Volume (units)",
+            yaxis_title="Amount (INR)",
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            )
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Profit Margin Chart
+        fig2 = px.line(
+            revenue_df,
+            x="Sales Volume",
+            y="Profit Margin (%)",
+            title="Profit Margin vs. Sales Volume",
+            labels={"Sales Volume": "Sales Volume (units)", "Profit Margin (%)": "Profit Margin (%)"}
+        )
+        
+        # Add vertical line at current sales
+        fig2.add_shape(
+            type="line",
+            x0=month_sales,
+            y0=0,
+            x1=month_sales,
+            y1=max(revenue_df["Profit Margin (%)"]),
+            line=dict(color="purple", width=2, dash="dot")
+        )
+        
+        # Add annotation for current month's profit margin
+        fig2.add_annotation(
+            x=month_sales,
+            y=profit_margin,
+            text=f"Current Margin: {profit_margin:.1f}%",
+            showarrow=True,
+            arrowhead=2,
+            arrowsize=1,
+            arrowwidth=2,
+            arrowcolor="purple"
+        )
+        
+        st.plotly_chart(fig2, use_container_width=True)
+        
+        # Additional Explanation
+        st.subheader("Understanding the Financial Equation")
+        
+        st.markdown("""
+        The financial equation directly links market trends to business outcomes:
+        
+        1. **Revenue Function**: Shows how sales volume ($x$) translates to revenue
+        2. **Breakeven Point**: The sales volume where revenue equals costs
+        3. **Profit Margin Curve**: Demonstrates how efficiency improves with scale
+        
+        By analyzing these relationships, businesses can:
+        - Set optimal pricing strategies
+        - Plan production capacity
+        - Forecast financial outcomes from market data
+        - Make data-driven investment decisions
+        """)
+    
+    else:
+        st.error("Sales data is not available for financial equation analysis.")
 
 # Predictive Analytics
 elif page == "Predictive Analytics":
