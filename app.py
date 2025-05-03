@@ -7,6 +7,7 @@ import os
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+from sklearn.linear_model import LinearRegression
 
 # Import data loader 
 import data_loader
