@@ -629,18 +629,18 @@ elif page == "Financial Equation":
         #### Your Financial Equations:
         
         **Revenue Equation:**
-        $$Revenue = Unit \ Price \times Sales \ Volume$$
-        $$Revenue = {unit_price:,} \times {month_sales:,} = {total_revenue:,.0f}$$
+        $$Revenue = Unit \ Price · Sales \ Volume$$
+        $$Revenue = {unit_price:,} · {month_sales:,} = {total_revenue:,.0f}$$
         
         **Profit Equation:**
         $$Profit = Revenue - Fixed \ Costs - Variable \ Costs$$
         $$Profit = {total_revenue:,.0f} - {fixed_costs:,} - {variable_costs:,.0f} = {profit:,.0f}$$
         
         **Variable Costs:**
-        $$Variable \ Costs = {variable_costs_percent}\% \times Revenue = {variable_costs:,.0f}$$
+        $$Variable \ Costs = {variable_costs_percent}\% · Revenue = {variable_costs:,.0f}$$
         
         **Profit Margin:**
-        $$Profit \ Margin = \frac{{Profit}}{{Revenue}} \times 100\% = {profit_margin:.1f}\%$$
+        $$Profit \ Margin = \frac{{Profit}}{{Revenue}} · 100\% = {profit_margin:.1f}\%$$
         """)
         
         # Display financial metrics
@@ -689,9 +689,18 @@ elif page == "Financial Equation":
             The breakeven point is the sales volume where total revenue equals total costs (fixed + variable),
             resulting in zero profit.
             
-            **Breakeven Point: {breakeven_point:,.0f} units**
+            **Breakeven Point Formula:**
+            $q_{{BE}} = \\frac{{FC}}{{p · (1 - VC\%)}}$
             
-            At this sales volume, the revenue will exactly cover all costs.
+            Where:
+            - $FC$ = Fixed Costs (₹{fixed_costs:,})
+            - $p$ = Unit Price (₹{unit_price:,})
+            - $VC\%$ = Variable Costs Percentage ({variable_costs_percent}%)
+            
+            **Calculation:**
+            $q_{{BE}} = \\frac{{{fixed_costs:,}}}{{{unit_price:,} · (1 - {variable_costs_percent}/100)}} = {breakeven_point:,.0f} \text{{ units}}$
+            
+            At this sales volume, the revenue will exactly cover all costs, resulting in zero profit.
             """)
             
             # Add breakeven point to visualization
@@ -828,11 +837,12 @@ elif page == "Financial Equation":
         st.subheader("Understanding the Financial Equation")
         
         st.markdown("""
-        The financial equation directly links market trends to business outcomes:
+        The financial equations directly link market trends to business outcomes:
         
-        1. **Revenue Function**: Shows how sales volume ($x$) translates to revenue
-        2. **Breakeven Point**: The sales volume where revenue equals costs
-        3. **Profit Margin Curve**: Demonstrates how efficiency improves with scale
+        1. **Revenue Function**: $R = p · q$ where $p$ is unit price and $q$ is sales volume
+        2. **Profit Function**: $P = R - FC - VC$ where $FC$ is fixed costs and $VC$ is variable costs
+        3. **Breakeven Point**: $q_{BE} = \\frac{FC}{p · (1 - VC\%)}$ where sales volume results in zero profit
+        4. **Profit Margin**: $PM\% = \\frac{P}{R} · 100\%$ showing efficiency at different scales
         
         By analyzing these relationships, businesses can:
         - Set optimal pricing strategies
