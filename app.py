@@ -1860,6 +1860,5 @@ elif page == "Market Forecast":
     else:
         st.error("Market data is not available. Please check the data files.")
 
-# Disclaimer
+# Add footer separator
 st.sidebar.markdown("---")
-st.sidebar.caption("This tool is a prototype for educational purposes.")
