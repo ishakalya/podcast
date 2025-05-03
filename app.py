@@ -71,7 +71,8 @@ Indian EV consumer segments. Use the sidebar to navigate through different analy
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Select a page:",
-    ["Overview", "Segment Profiles", "Market Analysis", "Geographic Insights", "Financial Projections", "Financial Equation", "Predictive Analytics"]
+    ["Overview", "Segment Profiles", "Market Analysis", "Geographic Insights", "Financial Projections", 
+     "Financial Equation", "Business Model", "Predictive Analytics"]
 )
 
 # Overview page
@@ -835,6 +836,427 @@ elif page == "Financial Equation":
     
     else:
         st.error("Sales data is not available for financial equation analysis.")
+
+# Business Model
+elif page == "Business Model":
+    st.header("AI Product/Service Business Model")
+    
+    st.markdown("""
+    ### Business Model Overview
+    
+    This page presents our comprehensive business model for the AI-powered EV Market Segmentation & Financial Analysis Tool.
+    The model is structured according to the Business Model Canvas framework, illustrating how we create, deliver, 
+    and capture value in the Indian EV market analytics space.
+    """)
+    
+    # Load business model from markdown file
+    try:
+        import os
+        business_model_path = "ev_project/New_project/business_model.md"
+        
+        if os.path.exists(business_model_path):
+            with open(business_model_path, "r") as f:
+                business_model_content = f.read()
+            
+            # Split content into sections
+            sections = business_model_content.split("###")
+            
+            # Value Proposition
+            if len(sections) > 1:
+                value_prop_section = "###" + sections[1]
+                st.subheader("Value Proposition")
+                
+                # Create columns for value proposition visualization
+                st.markdown("""
+                Our AI-powered solution delivers unique value through these five core capabilities:
+                """)
+                
+                vp_col1, vp_col2, vp_col3 = st.columns(3)
+                
+                with vp_col1:
+                    st.info("#### Data-Driven Consumer Insights\nTransform complex EV market data into actionable insights about the four key Indian consumer segments.")
+                
+                with vp_col2:
+                    st.success("#### Predictive Market Intelligence\nUse machine learning to forecast market trends, growth rates, and adoption patterns.")
+                
+                with vp_col3:
+                    st.warning("#### Strategic Decision Support\nGenerate evidence-based recommendations for product development, pricing, and marketing strategies.")
+                
+                vp_col4, vp_col5 = st.columns(2)
+                
+                with vp_col4:
+                    st.error("#### Financial Modeling\nProject revenue, costs, and profit margins based on different market scenarios.")
+                
+                with vp_col5:
+                    st.info("#### Competitive Advantage\nProvide early-mover advantage in the rapidly growing Indian EV market.")
+            
+            # Customer Segments Visualization
+            st.subheader("Customer Segments")
+            
+            # Create an interactive customer segment selector
+            segment_options = {
+                "Automotive Manufacturers": "Companies entering or expanding in the Indian EV market",
+                "Marketing Agencies": "Firms developing campaigns for EV brands and dealers",
+                "Investment Firms": "Companies analyzing market opportunities in the EV sector", 
+                "Automotive Suppliers": "Businesses developing components for EVs",
+                "Government Bodies": "Departments planning EV infrastructure and policies",
+                "Charging Infrastructure Providers": "Companies deploying charging networks",
+                "Fleet Operators": "Businesses converting to electric vehicles",
+                "Research Institutions": "Organizations studying EV market dynamics"
+            }
+            
+            selected_segment = st.selectbox(
+                "Explore customer segments:",
+                list(segment_options.keys())
+            )
+            
+            # Display selected segment information
+            st.markdown(f"#### {selected_segment}")
+            st.markdown(segment_options[selected_segment])
+            
+            # Segment-specific use cases
+            use_cases = {
+                "Automotive Manufacturers": [
+                    "Target market identification for new EV models",
+                    "Consumer preference analysis by segment",
+                    "Pricing strategy optimization based on segment willingness-to-pay",
+                    "Competitive positioning analysis",
+                    "Feature prioritization based on segment preferences"
+                ],
+                "Marketing Agencies": [
+                    "Segment-specific messaging and campaign development",
+                    "Channel strategy optimization by segment",
+                    "ROI forecasting for marketing initiatives",
+                    "Consumer journey mapping for each segment",
+                    "Creative strategy development based on segment insights"
+                ],
+                "Investment Firms": [
+                    "Market sizing and growth projections",
+                    "Competitive landscape analysis",
+                    "Risk assessment for EV market investments",
+                    "Identification of high-potential market segments",
+                    "Valuation support for EV companies"
+                ],
+                "Automotive Suppliers": [
+                    "Component demand forecasting",
+                    "OEM partnership opportunity identification",
+                    "Market entry strategy development",
+                    "R&D investment prioritization",
+                    "Supply chain optimization"
+                ],
+                "Government Bodies": [
+                    "Policy impact analysis and simulation",
+                    "Infrastructure planning for EV adoption",
+                    "Subsidy and incentive program design",
+                    "Public awareness campaign development",
+                    "Economic impact assessment of EV transition"
+                ],
+                "Charging Infrastructure Providers": [
+                    "Location optimization for charging stations",
+                    "Demand forecasting for charging services",
+                    "Pricing strategy development",
+                    "User behavior analysis",
+                    "Network expansion planning"
+                ],
+                "Fleet Operators": [
+                    "TCO (Total Cost of Ownership) analysis for EV fleet conversion",
+                    "Route optimization for EV characteristics",
+                    "Charging infrastructure planning",
+                    "Driver training and adoption strategy",
+                    "Maintenance cost prediction"
+                ],
+                "Research Institutions": [
+                    "Academic research support with proprietary data",
+                    "Trend analysis and forecasting",
+                    "Collaborative research opportunities",
+                    "Policy recommendation development",
+                    "Environmental impact assessment"
+                ]
+            }
+            
+            st.markdown("#### Key Use Cases:")
+            for use_case in use_cases[selected_segment]:
+                st.markdown(f"- {use_case}")
+            
+            # Revenue Streams Visualization
+            st.subheader("Revenue Streams")
+            
+            # Create visual representation of the tiered pricing model
+            pricing_data = pd.DataFrame({
+                "Subscription Tier": ["Basic", "Professional", "Enterprise"],
+                "Monthly Price (₹)": [50000, 125000, 300000],
+                "Features": [5, 10, 15]
+            })
+            
+            # Create horizontal bar chart for pricing tiers
+            fig = px.bar(
+                pricing_data,
+                y="Subscription Tier",
+                x="Monthly Price (₹)",
+                color="Subscription Tier",
+                orientation='h',
+                title="Tiered Subscription Model",
+                labels={"Monthly Price (₹)": "Monthly Price (₹)", "Subscription Tier": ""},
+                color_discrete_map={
+                    "Basic": "lightblue",
+                    "Professional": "royalblue",
+                    "Enterprise": "darkblue"
+                }
+            )
+            
+            fig.update_traces(texttemplate='₹%{x:,}', textposition='inside')
+            fig.update_yaxes(categoryorder='array', categoryarray=["Enterprise", "Professional", "Basic"])
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Additional revenue streams
+            st.markdown("#### Additional Revenue Streams:")
+            
+            rev_col1, rev_col2, rev_col3 = st.columns(3)
+            
+            with rev_col1:
+                st.metric("Custom Reports", "₹2,00,000 - ₹5,00,000", "per report")
+            
+            with rev_col2:
+                st.metric("Consulting Services", "₹25,000", "per hour")
+            
+            with rev_col3:
+                st.metric("White-labeling", "Custom Pricing", "")
+            
+            # Cost Structure Visualization
+            st.subheader("Cost Structure")
+            
+            # Create pie chart for cost breakdown
+            cost_labels = ["Development Team (45%)", "Cloud Infrastructure (15%)", "Administrative (10%)", 
+                          "Data Acquisition (15%)", "Marketing & Sales (10%)", "Customer Support (5%)"]
+            cost_values = [45, 15, 10, 15, 10, 5]
+            
+            fig = px.pie(
+                values=cost_values,
+                names=cost_labels,
+                title="Cost Structure Breakdown",
+                color_discrete_sequence=px.colors.sequential.Bluyl
+            )
+            
+            fig.update_traces(textposition='inside', textinfo='percent+label')
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Key Activities and Resources
+            st.subheader("Key Activities & Resources")
+            
+            # Create two columns for activities and resources
+            act_col1, act_col2 = st.columns(2)
+            
+            with act_col1:
+                st.markdown("#### Key Activities")
+                st.markdown("""
+                * **Data Collection & Processing**
+                * **Model Development & Maintenance**
+                * **Platform Development**
+                * **Market Research**
+                * **Sales & Marketing**
+                * **Customer Success**
+                """)
+            
+            with act_col2:
+                st.markdown("#### Key Resources")
+                st.markdown("""
+                * **AI/ML Models**
+                * **Data Pipeline**
+                * **Development Team**
+                * **Cloud Infrastructure**
+                * **Domain Expertise**
+                * **Intellectual Property**
+                """)
+            
+            # Business Model Canvas
+            st.subheader("Business Model Canvas")
+            
+            # Create a visual representation of the Business Model Canvas
+            st.markdown("""
+            The Business Model Canvas provides a comprehensive overview of our business strategy:
+            """)
+            
+            # Create rows for the canvas
+            canvas_row1 = st.columns([1, 1, 2, 1, 1])
+            canvas_row2 = st.columns([2, 3, 2])
+            canvas_row3 = st.columns([1, 1])
+            
+            with canvas_row1[0]:
+                st.markdown("""
+                **Key Partners**
+                
+                * Automotive Industry Associations
+                * Data Providers
+                * Cloud Service Providers
+                * Research Institutions
+                * Government Agencies
+                * Consulting Firms
+                """)
+            
+            with canvas_row1[1]:
+                st.markdown("""
+                **Key Activities**
+                
+                * Data Collection & Processing
+                * Model Development & Maintenance
+                * Platform Development
+                * Market Research
+                * Sales & Marketing
+                * Customer Success
+                """)
+            
+            with canvas_row1[2]:
+                st.markdown("""
+                **Value Proposition**
+                
+                * Data-Driven Consumer Insights
+                * Predictive Market Intelligence
+                * Strategic Decision Support
+                * Financial Modeling
+                * Competitive Advantage in the Indian EV market
+                """)
+            
+            with canvas_row1[3]:
+                st.markdown("""
+                **Customer Relationships**
+                
+                * Self-Service Portal
+                * Dedicated Account Management
+                * Training & Onboarding
+                * Regular Insights Reports
+                * User Community
+                * Continuous Improvement
+                """)
+            
+            with canvas_row1[4]:
+                st.markdown("""
+                **Customer Segments**
+                
+                **Primary:**
+                * Automotive Manufacturers
+                * Marketing Agencies
+                * Investment Firms
+                * Automotive Suppliers
+                
+                **Secondary:**
+                * Government Bodies
+                * Charging Infrastructure Providers
+                * Fleet Operators
+                * Research Institutions
+                """)
+            
+            with canvas_row2[0]:
+                st.markdown("""
+                **Key Resources**
+                
+                * AI/ML Models
+                * Data Pipeline
+                * Development Team
+                * Cloud Infrastructure
+                * Domain Expertise
+                * Intellectual Property
+                """)
+            
+            with canvas_row2[1]:
+                st.markdown("")
+            
+            with canvas_row2[2]:
+                st.markdown("""
+                **Channels**
+                
+                * SaaS Platform
+                * API Integration
+                * Industry Conferences
+                * Direct Sales
+                * Partner Network
+                * Digital Marketing
+                """)
+            
+            with canvas_row3[0]:
+                st.markdown("""
+                **Cost Structure**
+                
+                **Fixed Costs (70%):**
+                * Development Team (45%)
+                * Cloud Infrastructure (15%)
+                * Administrative (10%)
+                
+                **Variable Costs (30%):**
+                * Data Acquisition (15%)
+                * Marketing & Sales (10%)
+                * Customer Support (5%)
+                """)
+            
+            with canvas_row3[1]:
+                st.markdown("""
+                **Revenue Streams**
+                
+                **Tiered Subscriptions:**
+                * Basic: ₹50,000/month
+                * Professional: ₹1,25,000/month
+                * Enterprise: ₹3,00,000+/month
+                
+                **Additional Streams:**
+                * Custom Reports: ₹2-5 lakhs
+                * Consulting: ₹25,000/hour
+                * White-labeling: Custom pricing
+                """)
+            
+            # Scalability & Growth Strategy
+            st.subheader("Growth Strategy")
+            
+            # Create a roadmap visualization
+            roadmap_data = pd.DataFrame({
+                "Phase": ["Phase 1 (Year 1)", "Phase 2 (Year 2-3)", "Phase 3 (Year 4-5)"],
+                "Focus": ["Indian Market Penetration", "Regional Expansion", "Global Reach"],
+                "Revenue Target (₹ Cr)": [3, 10, 25],
+                "Customer Target": [20, 50, 100]
+            })
+            
+            fig = px.line(
+                roadmap_data,
+                x="Phase",
+                y="Revenue Target (₹ Cr)",
+                markers=True,
+                title="Revenue Growth Roadmap",
+                labels={"Phase": "", "Revenue Target (₹ Cr)": "Revenue (₹ Cr)"}
+            )
+            
+            fig2 = px.line(
+                roadmap_data,
+                x="Phase",
+                y="Customer Target",
+                markers=True,
+                title="Customer Acquisition Roadmap",
+                labels={"Phase": "", "Customer Target": "Enterprise Customers"}
+            )
+            
+            growth_col1, growth_col2 = st.columns(2)
+            
+            with growth_col1:
+                st.plotly_chart(fig, use_container_width=True)
+            
+            with growth_col2:
+                st.plotly_chart(fig2, use_container_width=True)
+            
+            # Growth strategies
+            st.markdown("""
+            #### Key Growth Strategies
+            
+            * **Market Expansion:** Begin with Indian market, then expand to other emerging EV markets in Asia
+            * **Product Extensions:** Develop specialized modules for different vehicle categories
+            * **Integration Services:** Offer API integration with existing enterprise systems
+            * **Vertical Solutions:** Create industry-specific packages for different customer segments
+            * **Acquisition Strategy:** Identify complementary startups for potential acquisition as we grow
+            """)
+        
+        else:
+            st.error("Business model file not found. Please check the file path.")
+    
+    except Exception as e:
+        st.error(f"Error loading business model: {e}")
 
 # Predictive Analytics
 elif page == "Predictive Analytics":
