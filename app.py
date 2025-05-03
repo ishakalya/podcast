@@ -1439,8 +1439,15 @@ elif page == "Market Forecast":
             
             with metric_col3:
                 st.metric("Projected Annual Growth", f"{market_stats['annual_growth_rate']:.2f}%")
-                st.metric("Growth Trend", f"{market_stats['growth_acceleration']:.2f}%", 
-                         delta=f"{'Accelerating' if market_stats['growth_acceleration'] > 0 else 'Decelerating'}")
+                
+                # Set delta color based on acceleration
+                acceleration = market_stats['growth_acceleration']
+                if acceleration > 0:
+                    st.metric("Growth Trend", f"{acceleration:.2f}%", 
+                             delta="Accelerating", delta_color="normal")
+                else:
+                    st.metric("Growth Trend", f"{acceleration:.2f}%", 
+                             delta="Decelerating", delta_color="inverse")
             
             # Display real market data
             st.subheader("Historical EV Sales Data")
