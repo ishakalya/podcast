@@ -640,7 +640,7 @@ elif page == "Financial Equation":
         $$Variable \ Costs = {variable_costs_percent}\% · Revenue = {variable_costs:,.0f}$$
         
         **Profit Margin:**
-        $$Profit \ Margin = \frac{{Profit}}{{Revenue}} · 100\% = {profit_margin:.1f}\%$$
+        $$Profit \ Margin = \frac{Profit}{Revenue} · 100\% = {profit_margin:.1f}\%$$
         """)
         
         # Display financial metrics
@@ -841,8 +841,8 @@ elif page == "Financial Equation":
         
         1. **Revenue Function**: $R = p · q$ where $p$ is unit price and $q$ is sales volume
         2. **Profit Function**: $P = R - FC - VC$ where $FC$ is fixed costs and $VC$ is variable costs
-        3. **Breakeven Point**: $q_{BE} = \\frac{FC}{p · (1 - VC\%)}$ where sales volume results in zero profit
-        4. **Profit Margin**: $PM\% = \\frac{P}{R} · 100\%$ showing efficiency at different scales
+        3. **Breakeven Point**: $q_{BE} = \frac{FC}{p · (1 - VC\%)}$ where sales volume results in zero profit
+        4. **Profit Margin**: $PM\% = \frac{P}{R} · 100\%$ showing efficiency at different scales
         
         By analyzing these relationships, businesses can:
         - Set optimal pricing strategies
