@@ -18,15 +18,28 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Podcast API"
+args = "MongoDB"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "CRUD Podcast API"
 
 [[workflows.workflow]]
-name = "Podcast API"
+name = "MongoDB"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node app.js"
+args = "mongod --dbpath /tmp/mongodb --port 27017 --bind_ip 127.0.0.1"
+waitForPort = 27017
+
+[[workflows.workflow]]
+name = "CRUD Podcast API"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node crud-demo.js"
 waitForPort = 5000
 
 [[ports]]

@@ -13,10 +13,20 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming')
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection failed:', err));
+// MongoDB connection with better error handling
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+  maxPoolSize: 10
+})
+.then(() => {
+  console.log('✅ Connected to MongoDB successfully');
+})
+.catch(err => {
+  console.error('❌ MongoDB connection failed:', err);
+  console.log('📄 Running in demo mode without database');
+});
 
 // User Schema
 const userSchema = new mongoose.Schema({
