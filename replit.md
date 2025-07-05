@@ -1,108 +1,62 @@
-# EV Market Segmentation Tool
+# Podcast Streaming Service
 
 ## Overview
 
-This is a comprehensive Electric Vehicle (EV) market analysis and segmentation tool built with Streamlit. The application provides AI-powered insights into the Indian EV market, featuring consumer segmentation, sales forecasting, and interactive visualizations to support strategic decision-making for automotive manufacturers, investors, and policymakers.
+A comprehensive podcast streaming platform that allows users to discover, listen to, and manage podcasts. Creators can upload and manage their podcast content, while listeners can subscribe, favorite episodes, and track their listening progress.
 
 ## System Architecture
 
-### Frontend Architecture
-- **Framework**: Streamlit web application
-- **Visualization Libraries**: 
-  - Matplotlib and Seaborn for static charts
-  - Plotly Express and Plotly Graph Objects for interactive visualizations
-- **Layout**: Wide layout with expandable sidebar navigation
-- **Caching**: Streamlit's `@st.cache_data` decorator for performance optimization
+### Technology Stack
+- **Frontend**: React.js with Context API for state management
+- **Backend**: Node.js with Express.js framework  
+- **Database**: MongoDB for data persistence
+- **Authentication**: JWT tokens with bcrypt password hashing
+- **File Storage**: Local file system with multer for uploads
 
-### Backend Architecture
-- **Data Processing**: Pure Python with pandas for data manipulation
-- **Machine Learning**: scikit-learn for predictive modeling and clustering
-- **Deep Learning**: TensorFlow/Keras for advanced pattern recognition
-- **File Structure**: Modular design with separate data loading and analysis modules
+### Key Features
+- User authentication and authorization (listeners, creators, admins)
+- Podcast discovery and browsing with categories and search
+- Audio streaming and playback controls
+- Subscription management and favorites
+- Creator dashboard for podcast and episode management
+- User profiles and listening history
+- Responsive design for all devices
 
-### Data Storage Solutions
-- **Primary Storage**: CSV files stored in local filesystem
-- **Data Organization**: Structured in `ev_project/` directory with subdirectories for datasets
-- **No Database**: Currently uses file-based storage without traditional database system
+## System Components
 
-## Key Components
+### Frontend (React)
+- Component-based architecture with reusable UI elements
+- Context providers for authentication and app state
+- Protected routes based on user roles
+- Responsive design with modern CSS
 
-### 1. Data Loader Module (`data_loader.py`)
-- Centralized data loading functions for all datasets
-- Date preprocessing and standardization
-- Aggregation functions for state and manufacturer sales data
-- Consumer response segmentation logic
-- Sales prediction functionality
+### Backend (Express.js)
+- RESTful API design with proper HTTP methods
+- Middleware for authentication, validation, and error handling
+- File upload handling for audio and images
+- Database models and relationships
 
-### 2. Main Application (`app.py`)
-- Streamlit interface with multi-page navigation
-- Data caching and performance optimization
-- Integration of visualization components
-- Consumer segment descriptions and profiles
+### Database (MongoDB)
+- User profiles with roles and preferences
+- Podcast metadata and episode information
+- Subscription and favorite relationships
+- Listening history and progress tracking
 
-### 3. Segment Descriptions (`assets/segment_descriptions.py`)
-- Detailed consumer segment profiles including:
-  - Economy EV Seekers
-  - Family EV Enthusiasts
-  - Premium EV Adopters (implied)
-  - Luxury Performance Seekers (implied)
-- Demographics, needs, concerns, and behavioral patterns for each segment
-
-### 4. Analysis Modules
-- **Market Analysis** (`ev_market_analysis.py`): Market leaders, growth trends, geographic distribution
-- **Predictive Models** (`ev_predictive_models.py`): Sales forecasting, state adoption prediction, consumer likelihood modeling
-- **Prototype Development** (`prototype.py`): Core business logic and financial modeling
-
-## Data Flow
-
-1. **Data Ingestion**: CSV files loaded from `ev_project/` directory structure
-2. **Data Processing**: Date standardization, aggregation by state/manufacturer/year
-3. **Analysis Pipeline**: 
-   - Market leader identification
-   - Geographic distribution analysis
-   - Consumer segmentation using clustering algorithms
-   - Predictive modeling using regression and neural networks
-4. **Visualization**: Interactive charts and static plots generated dynamically
-5. **User Interface**: Streamlit renders processed data with caching for performance
-
-## External Dependencies
-
-### Core Libraries
-- **streamlit**: Web application framework
-- **pandas**: Data manipulation and analysis
-- **numpy**: Numerical computing
-- **matplotlib**: Static plotting
-- **seaborn**: Statistical visualizations
-- **plotly**: Interactive visualizations
-
-### Machine Learning Stack
-- **scikit-learn**: Traditional ML algorithms (LinearRegression, KMeans, RandomForest, etc.)
-- **tensorflow/keras**: Deep learning models for pattern recognition
-- **joblib**: Model serialization and persistence
-
-### Data Sources
-- Government of India Vahan Dashboard data (EV sales by state and manufacturer)
-- Consumer survey responses on EV adoption in Indian automobile sector
-- Date dimension tables for time series analysis
+## Security & Performance
+- JWT-based authentication with secure password hashing
+- Role-based access control (listeners, creators, admins)
+- File upload validation and size limits
+- Rate limiting for API endpoints
+- CORS configuration for cross-origin requests
 
 ## Deployment Strategy
-
-### Current Setup
-- **Environment**: Local development with Python virtual environment
-- **Configuration**: Streamlit app configured for wide layout and expanded sidebar
-- **Performance**: Data caching implemented to reduce load times
-- **Error Handling**: Basic exception handling in data loading functions
-
-### Production Considerations
-- Application designed for cloud deployment (Streamlit Cloud, Heroku, or similar)
-- Modular structure supports containerization with Docker
-- Static asset management through `assets/` directory
-- No external database dependencies simplify deployment
+- Environment-based configuration
+- MongoDB database setup
+- Static file serving for uploads
+- Port configuration for production deployment
 
 ## Changelog
-
-- July 05, 2025. Initial setup
+- July 05, 2025: Project restructure and clean start for podcast streaming service
 
 ## User Preferences
-
 Preferred communication style: Simple, everyday language.
