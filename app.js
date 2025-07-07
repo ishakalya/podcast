@@ -20,8 +20,6 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://harshgoyal2004:<db_password>@cluster0.jrnt2dh.mongodb.net/podcast-streaming?retryWrites=true&w=majority&appName=Cluster0', {
       serverSelectionTimeoutMS: 5000,
       maxPoolSize: 10,
-      bufferMaxEntries: 0,
-      bufferCommands: false,
       connectTimeoutMS: 30000,
       socketTimeoutMS: 30000
     });
@@ -29,8 +27,6 @@ const connectDB = async () => {
   } catch (err) {
     console.error('❌ MongoDB connection failed:', err);
     console.log('📄 Running in demo mode without database');
-    // Set mongoose to not buffer commands when disconnected
-    mongoose.set('bufferCommands', false);
   }
 };
 
