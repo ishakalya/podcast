@@ -19,12 +19,18 @@ const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming', {
       serverSelectionTimeoutMS: 5000,
-      maxPoolSize: 10
+      maxPoolSize: 10,
+      bufferMaxEntries: 0,
+      bufferCommands: false,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 30000
     });
     console.log('✅ Connected to MongoDB successfully');
   } catch (err) {
     console.error('❌ MongoDB connection failed:', err);
     console.log('📄 Running in demo mode without database');
+    // Set mongoose to not buffer commands when disconnected
+    mongoose.set('bufferCommands', false);
   }
 };
 
