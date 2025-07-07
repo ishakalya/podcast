@@ -17,7 +17,7 @@ app.use(express.static('public'));
 // MongoDB connection with better error handling
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming', {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://harshgoyal2004:<db_password>@cluster0.jrnt2dh.mongodb.net/podcast-streaming?retryWrites=true&w=majority&appName=Cluster0', {
       serverSelectionTimeoutMS: 5000,
       maxPoolSize: 10,
       bufferMaxEntries: 0,
