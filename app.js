@@ -15,19 +15,18 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
 
 // MongoDB connection with better error handling
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  maxPoolSize: 10
-})
-.then(() => {
-  console.log('✅ Connected to MongoDB successfully');
-})
-.catch(err => {
-  console.error('❌ MongoDB connection failed:', err);
-  console.log('📄 Running in demo mode without database');
-});
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/podcast-streaming', {
+      serverSelectionTimeoutMS: 5000,
+      maxPoolSize: 10
+    });
+    console.log('✅ Connected to MongoDB successfully');
+  } catch (err) {
+    console.error('❌ MongoDB connection failed:', err);
+    console.log('📄 Running in demo mode without database');
+  }
+};
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -471,8 +470,14 @@ app.use((req, res) => {
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🎧 Podcast Streaming Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🎧 Podcast Streaming Server running on port ${PORT}`);
+    console.log(`🌐 Server URL: http://localhost:${PORT}`);
+  });
+};
+
+startServer().catch(console.error);
 
 module.exports = app;
