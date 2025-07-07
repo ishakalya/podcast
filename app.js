@@ -4,9 +4,10 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 // Basic middleware
 app.use(cors());
@@ -403,6 +404,50 @@ app.get('/api/users/subscriptions', auth, async (req, res) => {
   }
 });
 
+// Update podcast
+app.put('/api/podcasts/:id', auth, async (req, res) => {
+  try {
+    const podcast = await Podcast.findById(req.params.id);
+    if (!podcast) {
+      return res.status(404).json({ success: false, message: 'Podcast not found' });
+    }
+    // Only creator or admin can update
+    if (podcast.creator.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorized to update this podcast' });
+    }
+    const { title, description, category, coverImage, isActive } = req.body;
+    if (title !== undefined) podcast.title = title;
+    if (description !== undefined) podcast.description = description;
+    if (category !== undefined) podcast.category = category;
+    if (coverImage !== undefined) podcast.coverImage = coverImage;
+    if (isActive !== undefined) podcast.isActive = isActive;
+    await podcast.save();
+    res.json({ success: true, message: 'Podcast updated successfully', podcast });
+  } catch (error) {
+    console.error('Update podcast error:', error);
+    res.status(500).json({ success: false, message: 'Failed to update podcast' });
+  }
+});
+
+// Delete podcast
+app.delete('/api/podcasts/:id', auth, async (req, res) => {
+  try {
+    const podcast = await Podcast.findById(req.params.id);
+    if (!podcast) {
+      return res.status(404).json({ success: false, message: 'Podcast not found' });
+    }
+    // Only creator or admin can delete
+    if (podcast.creator.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorized to delete this podcast' });
+    }
+    await podcast.deleteOne();
+    res.json({ success: true, message: 'Podcast deleted successfully' });
+  } catch (error) {
+    console.error('Delete podcast error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete podcast' });
+  }
+});
+
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -412,12 +457,17 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use((req, res) => {
+// 404 handler for API routes only
+app.use('/api', (req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found'
+    message: 'API route not found'
   });
+});
+
+// For all other routes, serve the frontend
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
